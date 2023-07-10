@@ -44,11 +44,13 @@ function getUserDataFromReq(req) {
 }
 
 app.get('/test', (req,res) =>{
+    mongoose.connect(process.env.MONGO_URL);
     res.json('test ok');
     
 });
 
 app.post('/register', async (req,res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {name, email, password} = req.body;
     try {
 
@@ -69,6 +71,7 @@ app.post('/register', async (req,res) => {
 
 //this is the login functionality 
 app.post('/login', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
    const {email, password} = req.body;
    const userDoc = await User.findOne({email});
    if(userDoc) {
@@ -92,6 +95,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     if(token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -106,6 +110,7 @@ app.get('/profile', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.put('/balance', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const { token } = req.cookies;
     const { amount } = req.body; // the deposit or withdrawal amount
   
@@ -154,6 +159,7 @@ app.post('/upload-by-link', async (req, res) => {
 //this works now but is not displaying the image 
 const photosMiddleware = multer({dest:'uploads/'});
 app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const uploadedFiles = [];
     for (let  i = 0; i < req.files.length; i++) {
         const {path,originalname} = req.files[i];
@@ -168,6 +174,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
 
 //this is failing for some reason
 app.post('/publocks', (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     const {
         title,address,addedPhotos,description,price,perks,extraInfo,startTime,endTime,maxCapacity,
@@ -186,6 +193,7 @@ app.post('/publocks', (req, res) => {
 });
 
 app.get('/user-publocks', (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const{id} = userData;
@@ -194,12 +202,14 @@ app.get('/user-publocks', (req, res) => {
 });
 
 app.get('/publocks/:id', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {id} = req.params;
     res.json(await Publock.findById(id));
 });
 
 //this is failing for some reason
 app.put('/publocks', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     const {
         id, title, address, addedPhotos, description, perks, extraInfo, startTime, endTime, maxCapacity, price,
@@ -233,10 +243,12 @@ app.put('/publocks', async (req, res) => {
 });
 
 app.get('/publocks', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     res.json( await Publock.find() );
 });
 
 app.post('/bookings', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
     const userData = await getUserDataFromReq(req);
     const {
         publock,storeStart, 
@@ -256,6 +268,7 @@ app.post('/bookings', async (req, res) => {
 });
 
 app.get('/bookings', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
    const userData = await getUserDataFromReq(req);
    res.json( await Booking.find({user:userData.id}).populate('publock') );
 });
