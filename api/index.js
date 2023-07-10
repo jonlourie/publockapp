@@ -28,7 +28,7 @@ app.use('/uploads', express.static(__dirname+'/uploads'));
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:5173',
+    origin: 'https://publockapp-268aj0cqy-jonlourie.vercel.app',
 }));
 
 mongoose.connect(process.env.MONGO_URL);
