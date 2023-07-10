@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "google-map-react": "^2.2.0",
+    "google-maps-react": "^2.0.6",
+    "image-downloader": "^4.3.0",
+    "node-sass": "^8.0.0",
+    "react-maps-google": "^0.4.11"
+  }
+}
