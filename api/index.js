@@ -31,7 +31,7 @@ app.use(cors({
     origin: 'http://localhost:5173',
 }));
 
-mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+mongoose.connect(process.env.MONGO_URL);
 
 //this is not defined for some reason
 function getUserDataFromReq(req) {
@@ -44,13 +44,13 @@ function getUserDataFromReq(req) {
 }
 
 app.get('/api/test', (req,res) =>{
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     res.json('test ok');
     
 });
 
 app.post('/api/register', async (req,res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const {name, email, password} = req.body;
     try {
 
@@ -71,7 +71,7 @@ app.post('/api/register', async (req,res) => {
 
 //this is the login functionality 
 app.post('/api/login', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
    const {email, password} = req.body;
    const userDoc = await User.findOne({email});
    if(userDoc) {
@@ -95,7 +95,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 app.get('/api/profile', (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     if(token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -110,7 +110,7 @@ app.get('/api/profile', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.put('/api/balance', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const { token } = req.cookies;
     const { amount } = req.body; // the deposit or withdrawal amount
   
@@ -174,7 +174,7 @@ app.post('/api/upload', photosMiddleware.array('photos', 100), (req,res) => {
 
 //this is failing for some reason
 app.post('/api/publocks', (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     const {
         title,address,addedPhotos,description,price,perks,extraInfo,startTime,endTime,maxCapacity,
@@ -193,7 +193,7 @@ app.post('/api/publocks', (req, res) => {
 });
 
 app.get('/api/user-publocks', (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const{id} = userData;
@@ -202,14 +202,14 @@ app.get('/api/user-publocks', (req, res) => {
 });
 
 app.get('/api/publocks/:id', async (req, res) => {
-    mongoose.connect(process.env.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.env.MONGO_URL);
     const {id} = req.params;
     res.json(await Publock.findById(id));
 });
 
 //this is failing for some reason
 app.put('/api/publocks', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const {token} = req.cookies;
     const {
         id, title, address, addedPhotos, description, perks, extraInfo, startTime, endTime, maxCapacity, price,
@@ -243,12 +243,12 @@ app.put('/api/publocks', async (req, res) => {
 });
 
 app.get('/api/publocks', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     res.json( await Publock.find() );
 });
 
 app.post('/api/bookings', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
     const userData = await getUserDataFromReq(req);
     const {
         publock,storeStart, 
@@ -268,7 +268,7 @@ app.post('/api/bookings', async (req, res) => {
 });
 
 app.get('/api/bookings', async (req, res) => {
-    mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL);
    const userData = await getUserDataFromReq(req);
    res.json( await Booking.find({user:userData.id}).populate('publock') );
 });
