@@ -31,7 +31,7 @@ import Footer from './Footer';
 import { useConnect, useAccount} from "wagmi";
 import {MetaMaskConnector} from "wagmi/connectors/metaMask";
 
-axios.defaults.baseURL = import.meta.env.NEXT_PUBLIC_VITE_API_BASE_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
